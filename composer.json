@@ -1,0 +1,13 @@
+{
+    "name": "xing.chen/upload",
+    "description": "文件上传 支持YII2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ChenXing",
+            "email": "877349686@qq.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
