@@ -40,7 +40,11 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
 
         if (empty($newFilename)) $newFilename = $this->createFilename() . '.' . $file->getExtension();
 
-        if($file->saveAs(static::getFilePath($newFilename, $options['path'] ?? '')) === false)
+        # 创建目录
+        $dir = dirname(static::getFilePath($newFilename, $options['path'] ?? ''));
+        if (!is_dir($dir)) mkdir($dir,0777,true);
+
+        if($file->saveAs($dir . '/' . $newFilename) === false)
             throw new \Exception('保存文件失败');
 
         $relativePath = static::getRelativePath($newFilename, $options['path'] ?? '');
@@ -78,7 +82,7 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
      */
     public function getFilePath($filename, $module = '')
     {
-        return static::getDir() . "$module/" .$filename;
+        return static::getDir() . ($module ? "$module/" : '') .$filename;
     }
 
     public function getDir()
