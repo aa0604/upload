@@ -6,7 +6,7 @@
 更新速度：正式项目中使用，按需求更新（不怎么更新）
 
 ### YII配置
-```$xslt
+```php
 'components' => [
         'upload' => [
             'class' => 'xing\upload\core\YiiFactory',
@@ -33,7 +33,7 @@
         
 ```
 ### YII2 上传
-````
+````php
 # 上传到本地
 $uploadYii = Yii::$app->upload->getDrive();
 $file = $uploadYii->upload('上传表单名，如：model[image]或image', '', ['path' => '分类目录名，如user']);
@@ -41,7 +41,7 @@ $file = $uploadYii->upload('上传表单名，如：model[image]或image', '', [
 ````
 ### YII2 上传返回说明
 以上例返回的$file为说明
-```$xslt
+```php
 
 $file['url'] 返回图片完整的绝对url 
 $file['saveUrl'] 返回可保存到数据库的相对url
@@ -52,7 +52,7 @@ Yii::$app->upload->getDrive()->getFileUrl('user/123.jpg');
 
 
 # 上传到阿里云
-```$xslt
+```php
 # 先上传到本地
 $uploadYii = Yii::$app->upload->getDrive();
 $file = $uploadYii->upload('上传表单名，如：model[image]或image', '', ['path' => '分类目录名，如user']);

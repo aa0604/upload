@@ -17,15 +17,17 @@ class UploadFactory
         'ali' => '\xing\upload\UploadAli',
     ];
 
-    # 使用驱动
+    # 默认驱动
     public static $drive = 'ali';
 
     /**
-     * @param $name
+     *
      * @return \xing\upload\uploadYii|\xing\upload\uploadAli
+     * @param string $drive
+     * @return mixed
      */
-    public static function getInstance()
+    public static function getInstance($drive = '')
     {
-        return new static::$class[static::$drive];
+        return new static::$class[$drive ?: static::$drive];
     }
 }
