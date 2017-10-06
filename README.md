@@ -1,8 +1,10 @@
 # 文件上传
-使用各种框架对接各种平台，本地服务器上传文件。
-目前支持上传至阿里云
+目前成果：支持YII2，支持上传至阿里云
 
-##YII2 上传至本地，再上传至阿里云示例
+最终目标：对接各种框架，对接各种平台。
+
+更新速度：正式项目中使用，按需求更新（不怎么更新）
+
 ### YII配置
 ```$xslt
 'components' => [
@@ -30,15 +32,34 @@
         ]
         
 ```
-### 代码示例
+### YII2 上传
 ````
-上传到本地
+# 上传到本地
 $uploadYii = Yii::$app->upload->getDrive();
-$file = $uploadYii->upload($postFieldName, '', ['path' => $module]);
-$newFilename = $uploadYii->getFilePath($file['saveUrl']);
+$file = $uploadYii->upload('上传表单名，如：model[image]或image', '', ['path' => '分类目录名，如user']);
 
-Yii::$app->upload->getDrive('ali')->upload($uploadYii->relativePath.$file['saveUrl'], $newFilename);
+````
+### YII2 上传返回说明
+以上例返回的$file为说明
+```$xslt
+
+$file['url'] 返回图片完整的绝对url 
+$file['saveUrl'] 返回可保存到数据库的相对url
+
+前端输出：（由于保存到数据库的数据为最短字符串，所以前端输出必须使用此方法）
+Yii::$app->upload->getDrive()->getFileUrl('user/123.jpg');
+```
+
+
+# 上传到阿里云
+```$xslt
+# 先上传到本地
+$uploadYii = Yii::$app->upload->getDrive();
+$file = $uploadYii->upload('上传表单名，如：model[image]或image', '', ['path' => '分类目录名，如user']);
+ 
+$newFilename = $uploadYii->getFilePath($file['saveUrl']);
+UploadFactory::getInstance()->upload($uploadYii->relativePath.$file['saveUrl'], $newFilename);
 # 上传后删除
 $fullPath = $uploadYii->getDir() . $file['saveUrl'];
 unlink($fullPath);
-````
+```
