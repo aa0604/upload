@@ -34,6 +34,13 @@ class UploadAli  implements \xing\upload\core\UploadInterface
         return $oss;
     }
 
+    public function delete($file)
+    {
+        $oss = & $this->drive;
+        $oss->deleteObject($this->config['UploadBucket'], $file);
+        return $oss;
+    }
+
     /**
      * @param $config
      * @return $this

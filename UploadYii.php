@@ -54,6 +54,12 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
         ];
     }
 
+    public function delete($file)
+    {
+        $fullFIle = static::getFilePath($file);
+        return unlink($fullFIle);
+    }
+
     public function config($config)
     {
         isset($config['uploadPathRoot']) && $this->uploadPathRoot = $config['uploadPathRoot'];
