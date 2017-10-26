@@ -20,7 +20,7 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
 
     public $maxSize;
 
-    public $allowExtend = ['jpg', 'jpeg', 'png'];
+    public $allowExtend = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
 
     public $domain;
 
@@ -36,9 +36,9 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
 
         if ($this->maxSize && $file->size > $this->maxSize) throw new \Exception('文件过大');
 
-        if (!in_array($file->getExtension(), $this->allowExtend))  throw new \Exception('不允许上传此类型的文件');
+        if (!empty($this->allowExtend) && !empty($file->getExtension()) && !in_array($file->getExtension(), $this->allowExtend))  throw new \Exception('不允许上传此类型的文件');
 
-        if (empty($newFilename)) $newFilename = $this->createFilename() . '.' . $file->getExtension();
+        if (empty($newFilename)) $newFilename = $this->createFilename() . ($file->getExtension() ? '.' . $file->getExtension() : '');
 
         # 创建目录
         $dir = dirname(static::getFilePath($newFilename, $options['path'] ?? ''));
