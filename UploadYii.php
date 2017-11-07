@@ -36,7 +36,8 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
 
         if ($this->maxSize && $file->size > $this->maxSize) throw new \Exception('文件过大');
 
-        if (!empty($this->allowExtend) && !empty($file->getExtension()) && !in_array($file->getExtension(), $this->allowExtend))  throw new \Exception('不允许上传此类型的文件');
+        if (!empty($this->allowExtend) && !empty($file->getExtension()) && !in_array($file->getExtension(), $this->allowExtend))
+            throw new \Exception('不允许上传此类型的文件');
 
         if (empty($newFilename)) $newFilename = $this->createFilename() . ($file->getExtension() ? '.' . $file->getExtension() : '');
 
@@ -103,7 +104,7 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
      */
     public function getFileUrl($relativePath)
     {
-        return $this->domain . $this->relativePath . $relativePath;
+        return strpos('://', $relativePath) !== false ? $relativePath : $this->domain . $this->relativePath . $relativePath;
     }
     /**
      * 返回文件存储的相对路径
