@@ -104,6 +104,7 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
      */
     public function getFileUrl($relativePath)
     {
+        if (empty($relativePath)) return $relativePath;
         return strpos('://', $relativePath) !== false ? $relativePath : $this->domain . $this->relativePath . $relativePath;
     }
     /**
