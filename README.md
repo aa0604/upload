@@ -1,13 +1,13 @@
-
-# 安装
-composer require xing.chen/upload dev-master
-
 # 文件上传
 目前成果：支持YII2，支持上传至阿里云OSS
 
 最终目标：对接各种框架，对接各种平台。
 
 更新速度：正式项目中使用，按需求更新（不怎么更新）
+
+# 安装
+composer require xing.chen/upload dev-master
+
 ## YII2
 ### YII配置
 ```php
