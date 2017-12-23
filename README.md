@@ -1,4 +1,5 @@
-## 安装
+
+# 安装
 composer require xing.chen/upload dev-master
 
 # 文件上传
