@@ -1,3 +1,6 @@
+## 安装
+composer require xing.chen/upload dev-master
+
 # 文件上传
 目前成果：支持YII2，支持上传至阿里云OSS
 
