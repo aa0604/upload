@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "aliyuncs/oss-sdk-php": "^2.2"
     },
     "autoload": {
         "psr-4": {
