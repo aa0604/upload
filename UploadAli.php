@@ -26,27 +26,41 @@ class UploadAli extends \xing\upload\core\BaseUpLoad implements \xing\upload\cor
 
 
 
-    public function upload($file, $newFile = '', $options = [])
+    public function upload($fieldName, $module = '')
     {
+        if (!isset($_FILES[$fieldName])) throw new \Exception('请上传文件');
+        $info = $_FILES[$fieldName] ?? null;
+        if (empty($info)) throw new \Exception('没有获取到文件');
 
-        $oss = & $this->drive;
-        $oss->uploadFile($this->config['UploadBucket'], $file, $newFile, $options);
-        return $oss;
+        $file = $info['tmp_name'];
+        $extension = $this->getFileExtension($info['name']);
+        $saveFilename = $this->getRelativePath(date('YmdHis') . rand(100, 999) . '.' . $extension, $module);
+        $r = $this->drive->uploadFile($this->config['UploadBucket'], $this->relativePath . $saveFilename, $file);
+        if (!isset($r['oss-request-url']) || empty($r['oss-request-url'])) throw new \Exception('上传至云端失败');
+
+        return [
+            'url' => $this->getFileUrl($saveFilename),
+            'saveUrl' => $saveFilename,
+        ];
     }
 
-    public function uploadBase64($base64, $filePath = '', $options = [])
+    public function uploadBase64(& $base64, $module = '')
     {
-        $oss = & $this->drive;
-        $oss->putObject($this->config['UploadBucket'], $filePath, $base64);
-        return $oss;
+        $newFilename = $this->createBase64Filename($base64);
+        #  相对路径
+        $saveFilename = $this->getRelativePath($newFilename, $module);
+        $r = $this->drive->putObject($this->config['UploadBucket'], $this->relativePath . $saveFilename,  $this->getBase64Decode($base64));
+        if (!isset($r['oss-request-url']) || empty($r['oss-request-url'])) throw new \Exception('上传至云端失败');
+        return [
+            'url' => $this->getFileUrl($saveFilename),
+            'saveUrl' => $saveFilename,
+        ];
     }
 
 
     public function delete($file)
     {
-        $oss = & $this->drive;
-        $oss->deleteObject($this->config['UploadBucket'], $file);
-        return $oss;
+        return $this->drive->deleteObject($this->config['UploadBucket'], $file);
     }
 
     /**
@@ -55,6 +69,7 @@ class UploadAli extends \xing\upload\core\BaseUpLoad implements \xing\upload\cor
      */
     public function config($config)
     {
+        parent::config($config);
         $this->config = $config;
 
         $this->drive = new OssClient(

@@ -18,9 +18,8 @@ class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\cor
 
 
 
-    public function upload($file, $newFilename = '', $options = [])
+    public function upload($file, $module = '')
     {
-
         $file = UploadedFile::getInstanceByName($file);
         if (empty($file)) throw new \Exception('请上传文件');
 
@@ -29,21 +28,29 @@ class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\cor
         if (!empty($this->allowExtend) && !empty($file->getExtension()) && !in_array($file->getExtension(), $this->allowExtend))
             throw new \Exception('不允许上传此类型的文件');
 
-        if($file->saveAs($newFilename) === false) throw new \Exception('保存文件失败');
-        return true;
+        $saveFilename = $this->getRelativePath($this::createFilename(). '.' . $file->getExtension(), $module);
+        if($file->saveAs($this->getFilePath($saveFilename, '')) === false) throw new \Exception('保存文件失败');
+
+        return [
+            'url' => $this->getFileUrl($saveFilename),
+            'saveUrl' => $saveFilename,
+        ];
     }
 
-    public function uploadBase64($base64, $newFilename = '', $options = [])
+    public function uploadBase64(& $base64, $module = '')
     {
 
         if (empty($base64)) throw new \Exception('base64 为空');
 
-        # 创建目录
-        $dir = dirname($newFilename);
-        if (!is_dir($dir)) mkdir($dir,0777,true);
-
+        $newFilename = $this->createBase64Filename($base64);
+        $saveFilename = $this->getRelativePath($newFilename, $module);
         #  保存图片
-        return file_put_contents($newFilename, base64_decode(substr($base64, stripos($base64, ',') + 1)));
+        $r = file_put_contents($this->getFilePath($newFilename, $module), $this->getBase64Decode($base64));
+        if (!$r) throw new \Exception('保存文件失败');
+        return [
+            'url' => $this->getFileUrl($saveFilename),
+            'saveUrl' => $saveFilename,
+        ];
 
     }
 
@@ -53,14 +60,13 @@ class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\cor
         return unlink($fullFIle);
     }
 
+    /**
+     * @param $config
+     * @return $this
+     */
     public function config($config)
     {
-        isset($config['uploadPathRoot']) && $this->uploadPathRoot = $config['uploadPathRoot'];
-        isset($config['maxSize']) && $this->maxSize = $config['maxSize'];
-        isset($config['allowExtend']) && $this->allowExtend = $config['allowExtend'];
-        isset($config['domain']) && $this->domain = $config['domain'];
-        isset($config['relativePath']) && $this->relativePath = $config['relativePath'];
+        parent::config($config);
         return $this;
     }
-
 }

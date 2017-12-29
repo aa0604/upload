@@ -52,6 +52,16 @@ class BaseUpLoad
     }
 
     /**
+     * 获取文件扩展名
+     * @param $filename
+     * @return bool|string
+     */
+    protected function getFileExtension($filename)
+    {
+        return substr($filename, strpos($filename, '.') + 1);
+    }
+
+    /**
      * 生成文件名
      * @param null $targetId
      * @return string
@@ -95,5 +105,25 @@ class BaseUpLoad
     public static function getRelativePath($filename, $module = '')
     {
         return $module . '/'. $filename;
+    }
+
+    protected function config($config)
+    {
+        isset($config['uploadPathRoot']) && $this->uploadPathRoot = $config['uploadPathRoot'];
+        isset($config['maxSize']) && $this->maxSize = $config['maxSize'];
+        isset($config['allowExtend']) && $this->allowExtend = $config['allowExtend'];
+        isset($config['domain']) && $this->domain = $config['domain'];
+        isset($config['relativePath']) && $this->relativePath = $config['relativePath'];
+        return $this;
+    }
+
+    /**
+     * 获取 base64 正文
+     * @param $base64
+     * @return bool|string
+     */
+    public function getBase64Decode(& $base64)
+    {
+        return base64_decode(substr($base64, stripos($base64, ',') + 1));
     }
 }
