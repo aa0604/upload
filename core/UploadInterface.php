@@ -15,6 +15,8 @@ interface UploadInterface
 
     public function upload($file, $newFile = '', $options = []);
 
+    public function uploadBase64($base64, $newFilename = '', $options = []);
+
     public function delete($file);
 
     public function config($config);

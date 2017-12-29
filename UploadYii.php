@@ -11,20 +11,10 @@ namespace xing\upload;
 use Yii;
 use yii\web\UploadedFile;
 
-class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadInterface
+class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\core\UploadInterface
 {
 
-    use \xing\upload\core\BaseUpLoad;
-
-    public $uploadPathRoot;
-
     public $maxSize;
-
-    public $allowExtend = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
-
-    public $domain;
-
-    public $relativePath;
 
 
 
@@ -39,20 +29,22 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
         if (!empty($this->allowExtend) && !empty($file->getExtension()) && !in_array($file->getExtension(), $this->allowExtend))
             throw new \Exception('不允许上传此类型的文件');
 
-        if (empty($newFilename)) $newFilename = $this->createFilename() . ($file->getExtension() ? '.' . $file->getExtension() : '');
+        if($file->saveAs($newFilename) === false) throw new \Exception('保存文件失败');
+        return true;
+    }
+
+    public function uploadBase64($base64, $newFilename = '', $options = [])
+    {
+
+        if (empty($base64)) throw new \Exception('base64 为空');
 
         # 创建目录
-        $dir = dirname(static::getFilePath($newFilename, $options['path'] ?? ''));
+        $dir = dirname($newFilename);
         if (!is_dir($dir)) mkdir($dir,0777,true);
 
-        if($file->saveAs($dir . '/' . $newFilename) === false)
-            throw new \Exception('保存文件失败');
+        #  保存图片
+        return file_put_contents($newFilename, base64_decode(substr($base64, stripos($base64, ',') + 1)));
 
-        $relativePath = static::getRelativePath($newFilename, $options['path'] ?? '');
-        return [
-            'url' => static::getFileUrl($relativePath),
-            'saveUrl' => $relativePath,
-        ];
     }
 
     public function delete($file)
@@ -71,50 +63,4 @@ class UploadYii extends \yii\base\Component implements \xing\upload\core\UploadI
         return $this;
     }
 
-    /**
-     * 生成文件名
-     * @param null $targetId
-     * @return string
-     */
-    public static function createFilename($targetId = null)
-    {
-        return $targetId ?: date('YmdHis') . rand(100, 999);
-    }
-
-    /**
-     * 返回文件存储的绝对路径
-     * @param $filename
-     * @param $module
-     * @return string
-     */
-    public function getFilePath($filename, $module = '')
-    {
-        return static::getDir() . ($module ? "$module/" : '') .$filename;
-    }
-
-    public function getDir()
-    {
-        return \Yii::getAlias($this->uploadPathRoot) . $this->relativePath;
-    }
-
-    /**
-     * 返回文件访问网址
-     * @param $filePath
-     * @return string
-     */
-    public function getFileUrl($relativePath)
-    {
-        if (empty($relativePath)) return $relativePath;
-        return preg_match('/:\/\//', $relativePath) ? $relativePath : $this->domain . $this->relativePath . $relativePath;
-    }
-    /**
-     * 返回文件存储的相对路径
-     * @param $filename
-     * @param $module
-     * @return string
-     */
-    public static function getRelativePath($filename, $module = '')
-    {
-        return $module . '/'. $filename;
-    }
 }

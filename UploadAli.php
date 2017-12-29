@@ -17,13 +17,13 @@ use OSS\OssClient;
  *
  * @property \OSS\OssClient $drive
  */
-class UploadAli  implements \xing\upload\core\UploadInterface
+class UploadAli extends \xing\upload\core\BaseUpLoad implements \xing\upload\core\UploadInterface
 {
 
-    use \xing\upload\core\BaseUpLoad;
     public $drive;
 
     public $config;
+
 
 
     public function upload($file, $newFile = '', $options = [])
@@ -33,6 +33,14 @@ class UploadAli  implements \xing\upload\core\UploadInterface
         $oss->uploadFile($this->config['UploadBucket'], $file, $newFile, $options);
         return $oss;
     }
+
+    public function uploadBase64($base64, $filePath = '', $options = [])
+    {
+        $oss = & $this->drive;
+        $oss->putObject($this->config['UploadBucket'], $filePath, $base64);
+        return $oss;
+    }
+
 
     public function delete($file)
     {
