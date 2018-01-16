@@ -34,7 +34,7 @@ class UploadAli extends \xing\upload\core\BaseUpLoad implements \xing\upload\cor
 
         $file = $info['tmp_name'];
         $extension = $this->getFileExtension($info['name']);
-        $saveFilename = $this->getRelativePath(date('YmdHis') . rand(100, 999) . '.' . $extension, $module);
+        $saveFilename = $this->getRelativePath($this::createFilename() . '.' . $extension, $module);
         $r = $this->drive->uploadFile($this->config['UploadBucket'], $this->relativePath . $saveFilename, $file);
         if (!isset($r['oss-request-url']) || empty($r['oss-request-url'])) throw new \Exception('上传至云端失败');
 

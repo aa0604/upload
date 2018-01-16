@@ -68,7 +68,8 @@ class BaseUpLoad
      */
     public static function createFilename($targetId = null)
     {
-        return $targetId ?: date('YmdHis') . rand(100, 999);
+        $path = date('Ym') . '/';
+        return $path . ($targetId ?: date('YmdHis') . rand(100, 999));
     }
     /**
      * 返回文件存储的绝对路径
