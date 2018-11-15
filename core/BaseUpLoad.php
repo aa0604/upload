@@ -71,15 +71,22 @@ class BaseUpLoad
         $path = date('Ym') . '/';
         return $path . ($targetId ?: date('YmdHis') . rand(100, 999));
     }
+
     /**
      * 返回文件存储的绝对路径
      * @param $filename
-     * @param $module
+     * @param string $module
+     * @param bool $mkdir
      * @return string
      */
-    public function getFilePath($filename, $module = '')
+    public function getFilePath($filename, $module = '', $mkdir = false)
     {
-        return static::getDir() . ($module ? "$module/" : '') .$filename;
+        $saveFilename = static::getDir() . ($module ? "$module/" : '') .$filename;
+        if ($mkdir && !is_dir(dirname($saveFilename))) {
+            $dir = dirname($saveFilename);
+            mkdir($dir, 0777, true);
+        }
+        return $saveFilename;
     }
 
     public function getDir()

@@ -29,7 +29,7 @@ class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\cor
             throw new \Exception('不允许上传此类型的文件');
 
         $saveFilename = $this->getRelativePath($this::createFilename(). '.' . $file->getExtension(), $module);
-        if($file->saveAs($this->getFilePath($saveFilename, '')) === false) throw new \Exception('保存文件失败');
+        if($file->saveAs($this->getFilePath($saveFilename, '', true)) === false) throw new \Exception('保存文件失败');
 
         return [
             'url' => $this->getFileUrl($saveFilename),
@@ -45,7 +45,7 @@ class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\cor
         $newFilename = $this->createBase64Filename($base64);
         $saveFilename = $this->getRelativePath($newFilename, $module);
         #  保存图片
-        $r = file_put_contents($this->getFilePath($newFilename, $module), $this->getBase64Decode($base64));
+        $r = file_put_contents($this->getFilePath($newFilename, $module, true), $this->getBase64Decode($base64));
         if (!$r) throw new \Exception('保存文件失败');
         return [
             'url' => $this->getFileUrl($saveFilename),
