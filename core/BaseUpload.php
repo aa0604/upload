@@ -9,7 +9,7 @@
 namespace xing\upload\core;
 
 
-class BaseUpLoad
+class BaseUpload
 {
 
     public $allowExtend = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
