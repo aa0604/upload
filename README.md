@@ -52,20 +52,7 @@ $config = [
 ];
 ```
 ### YII框架配置
-```php
-<?php
 
-# yii单一配置
-'components' => [
-    'class' => 'xing\upload\UploadYii',
-    'uploadPathRoot' => '@api/web/', # 网站根目录
-    'relativePath' => 'upload/', # 上传根目录
-    'maxSize' => 2048000, ## 上传大小限制
-    'domain' => 'http://xxx.com/', # 访问域名
-];
-```
-
-### OSS配置
 yii框架中可以同时支持上传至oss和自有服务器
 ```php
 <?php
