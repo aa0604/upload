@@ -9,10 +9,20 @@
 namespace xing\upload\core;
 
 
-class BaseUpload
+class BaseUpLoad
 {
 
     public $allowExtend = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
+
+    public $fileTypes = [
+        'image/bmp' => 'bmp',
+        'image/gif' => 'gif',
+        'image/jpg' => 'jpg',
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'audio/x-aac' => 'aac',
+        ''
+    ];
 
     public $uploadPathRoot;
     public $domain;
@@ -37,18 +47,19 @@ class BaseUpload
         $contentType = substr($base64, 5, stripos($base64, ';') - 5);
         if (empty($contentType)) throw new \Exception('无法识别出该文件的类型');
 
-        $fileTypes = [
-            'image/bmp' => 'bmp',
-            'image/gif' => 'gif',
-            'image/jpg' => 'jpg',
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-        ];
-
-        $extension = $fileTypes[$contentType] ?? null;
-        if (is_null($extension) || !in_array($extension, $this->allowExtend))
-            throw new \Exception('此图片类型未被支持：'. $contentType);
+        // 检查
+        $this->checkFileType($contentType);
         return $extension;
+    }
+
+    protected function checkFileType($contentType)
+    {
+
+        // 全空为不限制
+        if (empty($this->allowExtend)) return true;
+        $extension = $this->fileTypes[$contentType] ?? null;
+        if (is_null($extension) || !in_array($extension, $this->allowExtend))
+            throw new \Exception('您不允许上传您的这种文件类型：' + $contentType);
     }
 
     /**
@@ -71,22 +82,15 @@ class BaseUpload
         $path = date('Ym') . '/';
         return $path . ($targetId ?: date('YmdHis') . rand(100, 999));
     }
-
     /**
      * 返回文件存储的绝对路径
      * @param $filename
-     * @param string $module
-     * @param bool $mkdir
+     * @param $module
      * @return string
      */
-    public function getFilePath($filename, $module = '', $mkdir = false)
+    public function getFilePath($filename, $module = '')
     {
-        $saveFilename = static::getDir() . ($module ? "$module/" : '') .$filename;
-        if ($mkdir && !is_dir(dirname($saveFilename))) {
-            $dir = dirname($saveFilename);
-            mkdir($dir, 0777, true);
-        }
-        return $saveFilename;
+        return static::getDir() . ($module ? "$module/" : '') .$filename;
     }
 
     public function getDir()
