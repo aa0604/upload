@@ -49,7 +49,7 @@ class BaseUpLoad
 
         // 检查
         $this->checkFileType($contentType);
-        return $extension;
+        return $this->fileTypes[$contentType] ?? null;
     }
 
     protected function checkFileType($contentType)
