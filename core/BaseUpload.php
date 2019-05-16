@@ -49,7 +49,7 @@ class BaseUpLoad
 
         // 检查
         $this->checkFileType($contentType);
-        return $this->fileTypes[$contentType] ?? null;
+        return isset($this->fileTypes[$contentType]) ? $this->fileTypes[$contentType] : null;
     }
 
     protected function checkFileType($contentType)
@@ -57,7 +57,7 @@ class BaseUpLoad
 
         // 全空为不限制
         if (empty($this->allowExtend)) return true;
-        $extension = $this->fileTypes[$contentType] ?? null;
+        $extension = isset($this->fileTypes[$contentType]) ? $this->fileTypes[$contentType] : null;
         if (is_null($extension) || !in_array($extension, $this->allowExtend))
             throw new \Exception('您不允许上传您的这种文件类型：' + $contentType);
     }

@@ -29,7 +29,7 @@ class UploadAli extends \xing\upload\core\BaseUpLoad implements \xing\upload\cor
     public function upload($fieldName, $module = '')
     {
         if (!isset($_FILES[$fieldName])) throw new \Exception('请上传文件');
-        $info = $_FILES[$fieldName] ?? null;
+        $info = isset($_FILES[$fieldName]) ? $_FILES[$fieldName] : null;
         if (empty($info)) throw new \Exception('没有获取到文件');
 
         $file = $info['tmp_name'];
