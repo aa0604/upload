@@ -5,11 +5,10 @@
  * Date: 2017/9/14
  * Time: 12:28
  */
-
 namespace xing\upload\core;
 
 
-class BaseUpLoad
+class BaseUpload
 {
 
     public $allowExtend = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];

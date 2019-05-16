@@ -5,11 +5,11 @@
  * Date: 2017/9/14
  * Time: 12:27
  */
-
 namespace xing\upload;
 
 use Yii;
 use OSS\OssClient;
+use xing\upload\core\BaseUpload;
 
 /**
  * Class UploadAli
@@ -17,13 +17,12 @@ use OSS\OssClient;
  *
  * @property \OSS\OssClient $drive
  */
-class UploadAli extends \xing\upload\core\BaseUpLoad implements \xing\upload\core\UploadInterface
+class UploadAli extends BaseUpload implements \xing\upload\core\UploadInterface
 {
 
     public $drive;
 
     public $config;
-
 
 
     public function upload($fieldName, $module = '')
