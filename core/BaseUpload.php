@@ -28,6 +28,18 @@ class BaseUpload
 
     public $relativePath;
 
+    /**
+     * 网络图片转为base64编码
+     * @param $url
+     * @param string $mime
+     * @return string
+     */
+    public static function base64EncodeImage ($url, $mime = 'image/jpeg') {
+        $img = file_get_contents($url);
+        $base64 = 'data:' . $mime . ';base64,' . chunk_split(base64_encode($img));
+        return $base64;
+    }
+
     public function createBase64Filename(& $base64)
     {
 

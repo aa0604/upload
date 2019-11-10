@@ -43,6 +43,20 @@ class UploadAli extends BaseUpload implements \xing\upload\core\UploadInterface
         ];
     }
 
+    /**
+     * 上传网络文件
+     * @param $url
+     * @param string $module
+     * @return array
+     * @throws \Exception
+     */
+    public function uploadUrl($url, $module = '')
+    {
+        $info = getimagesize($url);
+        $base64 = static::base64EncodeImage($url, $info['mime']);
+        return $this->uploadBase64($base64, $module);
+    }
+
     public function uploadBase64(& $base64, $module = '')
     {
         $newFilename = $this->createBase64Filename($base64);
