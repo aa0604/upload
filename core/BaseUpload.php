@@ -66,9 +66,9 @@ class BaseUpload
      * @param $filename
      * @return bool|string
      */
-    protected function getFileExtension($filename)
+    public function getFileExtension($filename)
     {
-        return substr($filename, strpos($filename, '.') + 1);
+        return substr($filename, strrpos($filename, '.') + 1);
     }
 
     /**
