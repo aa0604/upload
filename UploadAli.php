@@ -7,6 +7,7 @@
  */
 namespace xing\upload;
 
+use xing\helper\resource\HttpHelper;
 use Yii;
 use OSS\OssClient;
 use xing\upload\core\BaseUpload;
@@ -52,8 +53,9 @@ class UploadAli extends BaseUpload implements \xing\upload\core\UploadInterface
      */
     public function uploadUrl($url, $module = '')
     {
-        $info = getimagesize($url);
-        $base64 = static::base64EncodeImage($url, $info['mime']);
+//        $info = get_headers($url);
+        $mine = HttpHelper::getImageType($url);
+        $base64 = static::base64EncodeImage($url, $mine);
         return $this->uploadBase64($base64, $module);
     }
 

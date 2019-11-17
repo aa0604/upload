@@ -8,6 +8,8 @@
 namespace xing\upload\core;
 
 
+use xing\helper\resource\HttpHelper;
+
 class BaseUpload
 {
 
@@ -35,7 +37,7 @@ class BaseUpload
      * @return string
      */
     public static function base64EncodeImage ($url, $mime = 'image/jpeg') {
-        $img = file_get_contents($url);
+        $img = HttpHelper::getFile($url);
         $base64 = 'data:' . $mime . ';base64,' . chunk_split(base64_encode($img));
         return $base64;
     }
@@ -56,6 +58,7 @@ class BaseUpload
     {
         # 检查
         $contentType = substr($base64, 5, stripos($base64, ';') - 5);
+        er($contentType);
         if (empty($contentType)) throw new \Exception('无法识别出该文件的类型');
 
         // 检查
