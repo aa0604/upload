@@ -1,6 +1,6 @@
 {
     "name": "xing.chen/upload",
-    "description": "文件上传插件 支持原生代码使用，YII2框架，支持上传到自有服务和阿里云OSS，支持图片文件上传和base64编码上传",
+    "description": "文件上传插件 支持原生代码使用，YII2框架，支持上传到自有服务和阿里云OSS，支持图片文件上传和base64编码上传，支持上传远程图片至阿里云OSS",
     "license": "MIT",
     "authors": [
         {

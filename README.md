@@ -2,7 +2,7 @@
 ## 优点
 1、支持YII2，和阿里云OSS
 
-2、支持上传base64字符串的图片，支持上传图片
+2、支持上传base64字符串的图片，支持上传图片，支持上传远程图片至阿里云OSS
 
 3、所有驱动使用interface规范
 
@@ -98,6 +98,8 @@ $r = $upload->upload($postFieldName, '图片分类目录，如user');
 # base64编码上传
 $r = $upload->uploadBase64('base64编码', '图片分类目录，如user');
 
+# 远程图片上传（仅支持阿里云）
+$upload->uploadUrl('http://xx.com/xx.jpg');
 ```
 
 
@@ -112,6 +114,8 @@ $upload = Yii::$app->upload->getDrive($driveName);
 $r = $upload->upload($postFieldName, '图片分类目录，如user');
 # base64 编码上传
 $r = $upload->uploadBase64('base64编码', '图片分类目录，如user');
+# 远程图片上传（仅支持阿里云）
+$upload->uploadUrl('http://xx.com/xx.jpg');
 
 
 ```
