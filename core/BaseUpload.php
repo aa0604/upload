@@ -58,7 +58,6 @@ class BaseUpload
     {
         # 检查
         $contentType = substr($base64, 5, stripos($base64, ';') - 5);
-        er($contentType);
         if (empty($contentType)) throw new \Exception('无法识别出该文件的类型');
 
         // 检查
