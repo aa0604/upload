@@ -33,7 +33,8 @@ class UploadAli extends BaseUpload implements \xing\upload\core\UploadInterface
         if (empty($info)) throw new \Exception('没有获取到文件');
 
         $file = $info['tmp_name'];
-        $extension = $this->getFileExtension($info['name']);
+        $fileType = $info['type'] ?? static::getFileType($file);
+        $extension = $this->fileTypes[$fileType] ?? '';
         $saveFilename = $this->getRelativePath($this::createFilename() . '.' . $extension, $module);
         $r = $this->drive->uploadFile($this->config['UploadBucket'], $this->relativePath . $saveFilename, $file);
         if (!isset($r['oss-request-url']) || empty($r['oss-request-url'])) throw new \Exception('上传至云端失败');
@@ -71,7 +72,6 @@ class UploadAli extends BaseUpload implements \xing\upload\core\UploadInterface
             'saveUrl' => $saveFilename,
         ];
     }
-
 
     public function delete($file)
     {
