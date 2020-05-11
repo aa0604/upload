@@ -29,6 +29,7 @@ class UploadYii extends \xing\upload\core\BaseUpload implements \xing\upload\cor
             throw new \Exception('不允许上传此类型的文件');
 
         $saveFilename = $this->getRelativePath($this::createFilename(). '.' . $file->getExtension(), $module);
+        if (!is_dir(dirname($this->getFilePath($saveFilename)))) mkdir(dirname($this->getFilePath($saveFilename)), 0777, true);
         if($file->saveAs($this->getFilePath($saveFilename, '', true)) === false) throw new \Exception('保存文件失败');
 
         return [
