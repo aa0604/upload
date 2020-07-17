@@ -119,6 +119,11 @@ class BaseUpload
     public function getFileUrl($relativePath)
     {
         if (empty($relativePath)) return $relativePath;
+        return $this->getPrefixUrl($relativePath);
+    }
+
+    public function getPrefixUrl($relativePath)
+    {
         return preg_match('/:\/\//', $relativePath) ? $relativePath : $this->domain . $this->relativePath . $relativePath;
     }
     /**
