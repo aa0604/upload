@@ -92,6 +92,11 @@ class UploadAli extends BaseUpload implements \xing\upload\core\UploadInterface
             $config['OSS_ACCESS_KEY'],
             $config['OSS_ENDPOINT']
         );
+        
+        // 设置超时时间，避免上传大文件时超时
+        $this->drive->setTimeout($config['timeout'] ?? 300);  // 5分钟请求超时
+        $this->drive->setConnectTimeout(30); // 30秒连接超时
+        
         return $this;
     }
 }
